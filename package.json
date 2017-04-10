@@ -1,6 +1,6 @@
 {
   "name": "health-care-plan",
-  "version": "1.0.0",
+  "version": "0.1.0",
   "description": "PowerSchool plugin container for the health-care-plan Django application",
   "main": "index.js",
   "scripts": {

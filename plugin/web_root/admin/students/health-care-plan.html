@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Health Care Plans</title>
+<!-- required scripts -->
+	~[wc:commonscripts] 
+<!-- Required style sheets: screen.css, and print.css -->
+	<link href="/images/css/screen.css" rel="stylesheet" media="screen">
+	<link href="/images/css/print.css" rel="stylesheet" media="print">
+	<style>
+	    iframe {
+	        width: 100%;
+	    }
+	</style>
+</head> 
+<body> 
+	~[wc:admin_header_frame_css]
+	<!-- breadcrumb start -->
+		<a href="/admin/home.html" target="_top">Start Page</a> &gt; <a href="/admin/students/home.html?selectstudent=nosearch" target="_top">Student Selection</a> &gt; Health Care Plans
+		
+			<!-- breadcrumb end -->
+            ~[wc:admin_navigation_frame_css]
+            <!-- start of main menu and content -->
+            ~[wc:title_student_begin_css]Health Care Plans~[wc:title_student_end_css]
+            <iframe src="<!-- @echo API_URL -->/health-care-plan/~[tlist_sql;select dcid from students where id=~(curstudid)]~(dcid)[/tlist_sql]/?nurse_access=~[tlist_sql;
+                SELECT
+                  CASE
+                  WHEN ~[x:users_dcid] IN (
+                    SELECT
+                      DISTINCT users.dcid
+                    FROM teachers
+                      LEFT JOIN gen teacher_group ON teacher_group.cat = 'groups'
+                                                     AND teachers.groupvalue = teacher_group.id
+                      JOIN users ON teachers.users_dcid = users.dcid
+                    WHERE users.dcid IN (472, 15828, 24178, 22333) OR
+                          teacher_group.name = 'PS Admin'
+                  )
+                    THEN 'True'
+                  ELSE 'False'
+                  END AS nurse_access
+                FROM dual]~(nurse_access)[/tlist_sql]" style="border: none; min-height: 350px;" id="myIframe" scrolling="no"></iframe>
+            
+            <script>
+                require.config({
+                    paths: {
+                        'iFrameResizer': 'https://cdnjs.cloudflare.com/ajax/libs/iframe-resizer/3.5.14/iframeResizer'
+                    }
+                });
+                require(['jquery', 'iFrameResizer'], ($, iFrameResizer) => {
+                    $('#myIframe').iFrameResize();
+                    
+                    window.addEventListener("message", receiveMessage, false);
+
+                    function receiveMessage(event)
+                    {   
+                        try {
+                            const parsedData = JSON.parse(event.data);
+                            if (parsedData.printUrl) {
+                                  const printBtn = $('#btnPrint');
+                                  printBtn.attr('href', 'http://205.125.175.222:8080' + parsedData.printUrl);
+                                  printBtn.attr('target', '_blank');
+                            }
+                        } catch(ignore) {
+                            // ignore this exception since other event listeners will process other postMessage() calls
+                        }
+                    }
+                });
+            </script>
+</body>
+</html>
