@@ -1,0 +1,90 @@
+<html>
+
+<head>
+    <title>Health Care Plans</title>
+    ~[wc:commonscripts]
+    <link href="/images/css/screen.css" rel="stylesheet" media="screen">
+    <link href="/images/css/print.css" rel="stylesheet" media="print">
+    <style>
+	    iframe {
+	        width: 100%;
+	    }
+	</style>
+
+    <script>
+      function formHandler(form) {
+        window.location.href = document.navigation.page.options[document.navigation.page.selectedIndex].value;
+      }
+    </script>
+</head>
+
+<body>
+
+    ~[wc:teachers_header_fr_css]
+
+    <form name="navigation">
+        <span class="account-photo">~[studenttitlephoto]</span>
+        <h1>
+            Health Care Plans
+            <span class="nav-teacher">
+                <select name="page" size=1 onChange="javascript:formHandler()">
+                    <option value="">~[text]psx.html.teachers_studentpages.cumulative.select_screens[/text]</option>
+                        <option value="">--------------------</option>
+                        ~[x:teacherpages]
+                </select>
+            </span>
+            ~[studentalert]
+        </h1>
+        <p>~(studentname) &nbsp; ~(grade_level) &nbsp; ~(student_number) &nbsp; &nbsp; ~(track) &nbsp; &nbsp; ~(studschoolabbr) &nbsp; &nbsp; ~[enrollmentstatus]</p>
+    </form>
+    <div class="box-round">
+        <iframe src="<!-- @echo API_URL -->/health-care-plan/~[tlist_sql;select dcid from students where id=~(curstudid)]~(dcid)[/tlist_sql]/?nurse_access=~[tlist_sql;
+                    SELECT
+                    CASE
+                    WHEN ~[x:users_dcid] IN (
+                        SELECT
+                        DISTINCT users.dcid
+                        FROM teachers
+                        LEFT JOIN gen teacher_group ON teacher_group.cat = 'groups'
+                                                        AND teachers.groupvalue = teacher_group.id
+                        JOIN users ON teachers.users_dcid = users.dcid
+                        WHERE users.dcid IN (472, 15828, 24178, 22333) OR
+                            teacher_group.name = 'PS Admin'
+                    )
+                        THEN 'True'
+                    ELSE 'False'
+                    END AS nurse_access
+                    FROM dual]
+                        ~(nurse_access)
+                    [/tlist_sql]" style="border: none; min-height: 350px;" id="myIframe" scrolling="no"></iframe>
+    </div>
+
+    <script>
+        require.config({
+            paths: {
+                'iFrameResizer': 'https://cdnjs.cloudflare.com/ajax/libs/iframe-resizer/3.5.14/iframeResizer'
+            }
+        });
+        require(['jquery', 'iFrameResizer'], ($, iFrameResizer) => {
+            $('#myIframe').iFrameResize();
+            
+            window.addEventListener("message", receiveMessage, false);
+
+            function receiveMessage(event)
+            {   
+                try {
+                    const parsedData = JSON.parse(event.data);
+                    if (parsedData.printUrl) {
+                            const printBtn = $('#btnPrint');
+                            printBtn.attr('href', '<!-- @echo API_URL -->' + parsedData.printUrl);
+                            printBtn.attr('target', '_blank');
+                    }
+                } catch(ignore) {
+                    // ignore this exception since other event listeners will process other postMessage() calls
+                }
+            }
+        });
+    </script>
+    ~[wc:teachers_footer_fr_css]
+</body>
+</html>

@@ -38,7 +38,9 @@
                     THEN 'True'
                   ELSE 'False'
                   END AS nurse_access
-                FROM dual]~(nurse_access)[/tlist_sql]" style="border: none; min-height: 350px;" id="myIframe" scrolling="no"></iframe>
+                FROM dual]
+                    ~(nurse_access)
+                [/tlist_sql]" style="border: none; min-height: 350px;" id="myIframe" scrolling="no"></iframe>
             
             <script>
                 require.config({
@@ -57,7 +59,7 @@
                             const parsedData = JSON.parse(event.data);
                             if (parsedData.printUrl) {
                                   const printBtn = $('#btnPrint');
-                                  printBtn.attr('href', 'http://205.125.175.222:8080' + parsedData.printUrl);
+                                  printBtn.attr('href', '<!-- @echo API_URL -->' + parsedData.printUrl);
                                   printBtn.attr('target', '_blank');
                             }
                         } catch(ignore) {
