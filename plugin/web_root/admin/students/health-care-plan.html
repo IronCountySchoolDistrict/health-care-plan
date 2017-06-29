@@ -49,7 +49,7 @@
                     }
                 });
                 require(['jquery', 'iFrameResizer'], ($, iFrameResizer) => {
-                    $('#myIframe').iFrameResize();
+                    $('#myIframe').iFrameResize({checkOrigin: false});
                     
                     window.addEventListener("message", receiveMessage, false);
 
