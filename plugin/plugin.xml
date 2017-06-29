@@ -2,7 +2,7 @@
 <plugin xmlns="http://plugin.powerschool.pearson.com"
   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
   description="PowerSchool plugin container for the health-care-plan Django application."
-  name="Health Care Plan"
+  name="[PSAPPS] Health Care Plan"
   version="0.1.0"
   xsi:schemaLocation="http://plugin.powerschool.pearson.com plugin.xsd">
 
