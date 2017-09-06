@@ -32,7 +32,7 @@
                       LEFT JOIN gen teacher_group ON teacher_group.cat = 'groups'
                                                      AND teachers.groupvalue = teacher_group.id
                       JOIN users ON teachers.users_dcid = users.dcid
-                    WHERE users.dcid IN (472, 15828, 24178, 22333) OR
+                    WHERE users.dcid IN (472, 15828, 24178, 22333, 26180, 5724, 16076, 531) OR
                           teacher_group.name = 'PS Admin'
                   )
                     THEN 'True'

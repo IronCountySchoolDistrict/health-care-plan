@@ -3,7 +3,7 @@
   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
   description="PowerSchool plugin container for the health-care-plan Django application."
   name="[PSAPPS] Health Care Plan"
-  version="0.1.0"
+  version="0.1.1"
   xsi:schemaLocation="http://plugin.powerschool.pearson.com plugin.xsd">
 
   <publisher name="Iron County School District Data Team">
