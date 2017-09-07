@@ -8,7 +8,7 @@
 
 <script>
     require(['jquery'], function($) {
-        $('#std_information a:contains("Health")').parent().after(
+        $('#std_information a').last().parent().after(
             $('#health-care-plan-template').html()
         );
     });
